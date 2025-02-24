@@ -1,29 +1,30 @@
-package pl.woelke.configurator.printer.model;
+package pl.woelke.configurator.accessories;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pl.woelke.configurator.printer.accessories.Accessories;
+import lombok.ToString;
 
-import java.util.Set;
+import java.math.BigDecimal;
 
 @Entity
 @Getter
 @Setter
-@Builder( toBuilder = true)
+@ToString()
+@EqualsAndHashCode()
 @NoArgsConstructor
 @AllArgsConstructor
-public class Printer {
+@Builder(toBuilder = true)
+public class Accessory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +34,7 @@ public class Printer {
     @NotBlank
     private String name;
 
-    @OneToMany(mappedBy = "printer", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
-    private Set<Accessories> items;
+    @NotBlank
+    private BigDecimal price;
 
 }
