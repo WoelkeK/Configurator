@@ -6,6 +6,7 @@ import java.util.List;
 
 @Value
 public class BundleRequest {
+
     Long printerId;
     List<Long> accessoryIds;
 }

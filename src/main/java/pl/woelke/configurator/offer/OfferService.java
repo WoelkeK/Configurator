@@ -1,9 +1,8 @@
 package pl.woelke.configurator.offer;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.woelke.configurator.bundle.Bundle;
-import pl.woelke.configurator.bundle.BundleService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -11,13 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class OfferService {
 
-    @Autowired
-    private OfferRepository offerRepository;
+    private final OfferRepository offerRepository;
 
-    @Autowired
-    private BundleService bundleService;
 
     public Offer createOffer(List<Bundle> bundles) {
         Offer offer = new Offer();

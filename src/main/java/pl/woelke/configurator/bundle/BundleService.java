@@ -1,6 +1,7 @@
 package pl.woelke.configurator.bundle;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.woelke.configurator.accessories.Accessory;
 import pl.woelke.configurator.accessories.AccessoryRepository;
@@ -11,20 +12,18 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class BundleService {
 
-    @Autowired
-    private BundleRepository bundleRepository;
+    private final BundleRepository bundleRepository;
 
-    @Autowired
-    private PrinterRepository printerRepository;
+    private final PrinterRepository printerRepository;
 
-    @Autowired
-    private AccessoryRepository accessoryRepository;
+    private final AccessoryRepository accessoryRepository;
 
     public Bundle createBundle(Long printerId, List<Long> accessoryIds) {
         Printer printer = printerRepository.findById(printerId)
-                .orElseThrow(() -> new RuntimeException("Printer not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Printer not found"));
 
         List<Accessory> accessories = accessoryRepository.findAllById(accessoryIds);
 

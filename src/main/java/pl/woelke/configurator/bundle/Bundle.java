@@ -8,7 +8,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -54,6 +56,7 @@ public class Bundle {
     )
     private List<Accessory> accessories = new ArrayList<>();
 
-    @NotBlank
+    @NotNull
+    @Digits(integer = 10, fraction = 2, message = "Price must be a number with 2 digits after the decimal point")
     private BigDecimal totalPrice; // Suma cen drukarki i akcesoriów
 }
