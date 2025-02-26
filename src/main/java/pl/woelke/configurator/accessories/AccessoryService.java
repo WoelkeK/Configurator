@@ -4,6 +4,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
+import static pl.woelke.configurator.accessories.AccessoryResponse.mapAccessoriesToResponses;
+
 @Service
 @AllArgsConstructor
 public class AccessoryService {
@@ -24,6 +28,7 @@ public class AccessoryService {
 
         return AccessoryResponse.from(accessoryRepository.save(accessory));
     }
+
     @Transactional
     public AccessoryResponse update(Long id, AccessoryRequest request) {
         Accessory editedAccessory = accessoryRepository.findById(id).orElseThrow();
@@ -31,9 +36,15 @@ public class AccessoryService {
         editedAccessory.setPrice(request.getPrice());
         return AccessoryResponse.from(accessoryRepository.save(editedAccessory));
     }
+
     @Transactional
     public void delete(Long id) {
         accessoryRepository.findById(id).orElseThrow();
         accessoryRepository.deleteById(id);
+    }
+
+    public List<AccessoryResponse> findAllAccessories() {
+        List<Accessory> accessories = accessoryRepository.findAll();
+        return mapAccessoriesToResponses(accessories);
     }
 }

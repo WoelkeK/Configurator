@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static pl.woelke.configurator.printer.ReadPrinterResponse.mapPrintersToReadResponses;
+import static pl.woelke.configurator.printer.PrinterResponse.mapPrintersToReadResponses;
 import static pl.woelke.configurator.printer.UpdateOrCreatePrinterRequest.fromRequestToEntity;
 
 @Service
@@ -16,20 +16,20 @@ public class PrinterService {
 
     private final PrinterRepository printerRepository;
 
-    public ReadPrinterResponse read(Long id) {
+    public PrinterResponse read(Long id) {
         return printerRepository.findById(id)
-                .map(ReadPrinterResponse::from)
+                .map(PrinterResponse::from)
                 .orElseThrow(EntityNotFoundException::new);
     }
 
-    public ReadPrinterResponse create(UpdateOrCreatePrinterRequest printerRequest) {
+    public PrinterResponse create(UpdateOrCreatePrinterRequest printerRequest) {
         Printer printer = fromRequestToEntity(printerRequest);
-        return ReadPrinterResponse.from(printerRepository.save(printer));
+        return PrinterResponse.from(printerRepository.save(printer));
     }
 
 
     @Transactional
-    public ReadPrinterResponse update(UpdateOrCreatePrinterRequest printerRequest, Long id) {
+    public PrinterResponse update(UpdateOrCreatePrinterRequest printerRequest, Long id) {
         Printer printer = printerRepository.findById(id).orElseThrow(EntityNotFoundException::new);
 
         Printer editedPrinter = Printer.builder()
@@ -37,7 +37,7 @@ public class PrinterService {
                 .name(printerRequest.getName())
                 .price(printerRequest.getPrice())
                 .build();
-        return ReadPrinterResponse.from(printerRepository.save(editedPrinter));
+        return PrinterResponse.from(printerRepository.save(editedPrinter));
     }
 
     @Transactional
@@ -47,7 +47,7 @@ public class PrinterService {
     }
 
 
-    public List<ReadPrinterResponse> findAllPrinters() {
+    public List<PrinterResponse> findAllPrinters() {
         List<Printer> printers = (List<Printer>) printerRepository.findAll();
         return mapPrintersToReadResponses(printers);
     }

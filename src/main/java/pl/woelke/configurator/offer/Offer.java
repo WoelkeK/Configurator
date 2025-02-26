@@ -1,7 +1,11 @@
 package pl.woelke.configurator.offer;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,6 +25,7 @@ import pl.woelke.configurator.bundle.Bundle;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -37,7 +42,8 @@ public class Offer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "offer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "offer", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JsonManagedReference
     private List<Bundle> bundles = new ArrayList<>();
 
     private LocalDate creationDate;
@@ -45,5 +51,8 @@ public class Offer {
     @NotNull
     @Digits(integer = 10, fraction = 2, message = "Price must be a number with 2 digits after the decimal point")
     private BigDecimal totalPrice;
+
+    @Enumerated(EnumType.STRING)
+    private OfferStatus status;
 
 }

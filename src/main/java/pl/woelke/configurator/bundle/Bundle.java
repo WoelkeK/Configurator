@@ -1,6 +1,9 @@
 package pl.woelke.configurator.bundle;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -33,7 +36,7 @@ import java.util.List;
 @EqualsAndHashCode()
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder(toBuilder = true)
+@Builder
 public class Bundle {
 
     @Id
@@ -41,7 +44,8 @@ public class Bundle {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "offer_id", nullable = false) // Relacja wiele-do-jednego z Offer
+    @JoinColumn(name = "offer_id") // Relacja wiele-do-jednego z Offer
+    @JsonBackReference
     private Offer offer;
 
     @ManyToOne
@@ -54,6 +58,9 @@ public class Bundle {
             joinColumns = @JoinColumn(name = "bundle_id"),
             inverseJoinColumns = @JoinColumn(name = "accessory_id")
     )
+    @ToString.Exclude // Unikaj rekurencji w toString()
+    @EqualsAndHashCode.Exclude // Unikaj rekurencji w equals()/hashCode()
+    @JsonManagedReference // Zarządza relacją w JSON
     private List<Accessory> accessories = new ArrayList<>();
 
     @NotNull

@@ -6,21 +6,21 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Value
-public class ReadPrinterResponse {
+public class PrinterResponse {
 
     String name;
     BigDecimal price;
 
-    public static ReadPrinterResponse from(Printer printer) {
+    public static PrinterResponse from(Printer printer) {
 
-        return new ReadPrinterResponse(
+        return new PrinterResponse(
                 printer.getName(),
                 printer.getPrice());
     }
 
-    public static List<ReadPrinterResponse> mapPrintersToReadResponses(List<Printer> printers) {
+    public static List<PrinterResponse> mapPrintersToReadResponses(List<Printer> printers) {
         return printers.stream()
-                .map(ReadPrinterResponse::from)
+                .map(PrinterResponse::from)
                 .toList();
     }
 }
